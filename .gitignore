@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+**/dist
+**/.vscode
+**/settings.json
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+/.husky
+
+# types & source maps
+**.d.ts
+**.d.ts.map
+**.map
+**.json
+**.js
+**.js.map
+**.html
+**.css
+**.scss
+**.img
+**.jpg
+**.xl
+**.csv
+**.pdf
+
+# exceptions
+!webpack.config.js
+!webpack.config.prod.js
+!tsconfig.json
+!package.json
+!package-lock.json
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
