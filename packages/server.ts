@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import routes from "../router/router";
+import generateEnv from "../config/config";
 
 /**
  * Class - Server
@@ -31,7 +32,7 @@ class Server {
    * Method for initialising server
    */
   initialise() {
-    const PORT = 8001;
+    const PORT = generateEnv().PORT;
     const app = this.add_configurations();
     const initialise = app.listen(PORT, () => {
       console.log(`Listening on Port: ${PORT}`);

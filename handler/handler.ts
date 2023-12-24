@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 
 /**
- * Welcome Data
+ * Handler - Welcome
  * @description
  * Handler for Welcome Page
  */
@@ -13,6 +13,11 @@ const welcome: RequestHandler = async (_, res) => {
   }
 };
 
+/**
+ * Function - handler
+ * @description
+ * Function containing all route handlers
+ */
 const handler = () => {
   return {
     welcome_handler: welcome,
