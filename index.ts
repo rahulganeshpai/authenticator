@@ -1,4 +1,4 @@
-import server from "./packages/server";
+import server from "./modules/server";
 
 // Initialse Server
 server.initialise();

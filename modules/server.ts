@@ -2,7 +2,7 @@ import express, { json } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-import routes from "../router/router";
+import router from "../routes/routes";
 import generateEnv from "../config/config";
 
 /**
@@ -23,7 +23,7 @@ class Server {
     app.use(cors({ origin: "*" }));
     app.use(helmet());
     app.use(compression());
-    app.use("/api/v1/welcome", routes().welcome_route);
+    app.use("/api/v1/", router);
     return app;
   }
   /**
