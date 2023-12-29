@@ -2,6 +2,8 @@ import { RequestHandler } from "express";
 import user from "../modules/user";
 import utils from "../utils/utils";
 
+let message = null;
+
 /**
  * Controller - Welcome
  * @description
@@ -22,12 +24,28 @@ const welcome: RequestHandler = async (_, res) => {
  */
 const create_user: RequestHandler = async (req, res) => {
   try {
-    let message = null;
     const new_user: any = await user.create_user(req.body);
     utils.check_statuserror(new_user.status)
       ? (message = new_user.message)
       : (message = "Success");
     res.status(new_user.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Fetch Credentials
+ * @description
+ * Controller for fetching user credentials
+ */
+const fetch_credentials: RequestHandler = async (req, res) => {
+  try {
+    const credentials: any = await user.fetch_credentials(req.body);
+    utils.check_statuserror(credentials.status)
+      ? (message = `${credentials.message}`)
+      : (message = credentials.message.data);
+    res.status(credentials.status).send(message);
   } catch (error: any) {
     res.status(500).send(`${error}`);
   }
@@ -42,6 +60,7 @@ const controller = () => {
   return {
     welcome_handler: welcome,
     create_user: create_user,
+    fetch_credentials: fetch_credentials,
   };
 };
 

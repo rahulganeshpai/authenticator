@@ -16,6 +16,9 @@ class Utils {
   check_statuserror(status: number) {
     return /^[4-5]/.test(status.toString());
   }
+  check_statusredirection(status: number){
+    return status === 204 ? status=200: status=status
+  }
 }
 
 const utils = new Utils();
