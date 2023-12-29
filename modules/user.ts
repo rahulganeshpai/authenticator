@@ -10,10 +10,12 @@ class User {
   async create_user(payload: any) {
     const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
     const headers = {
-      "X-Vault-Token": `"${VAULT_TOKEN}"`,
+      "X-Vault-Token": `${VAULT_TOKEN}`,
     };
+    const username = payload.username;
+    delete payload.username;
     const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}`,
+      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/userpass/users/${username}`,
       headers: headers,
       payload: payload,
     };

@@ -7,6 +7,15 @@ class Utils {
   check_nullundefined(value: any) {
     return value ?? "false";
   }
+  generate_statusobject(status: number, message: any) {
+    return {
+      status: status,
+      message: message,
+    };
+  }
+  check_statuserror(status: number) {
+    return /^[4-5]/.test(status.toString());
+  }
 }
 
 const utils = new Utils();

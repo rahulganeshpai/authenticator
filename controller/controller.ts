@@ -2,8 +2,6 @@ import { RequestHandler } from "express";
 import user from "../modules/user";
 import utils from "../utils/utils";
 
-let status = null;
-
 /**
  * Controller - Welcome
  * @description
@@ -24,13 +22,14 @@ const welcome: RequestHandler = async (_, res) => {
  */
 const create_user: RequestHandler = async (req, res) => {
   try {
+    let message = null;
     const new_user: any = await user.create_user(req.body);
-    res.status(new_user.message.status).send(new_user.status);
+    utils.check_statuserror(new_user.status)
+      ? (message = new_user.message)
+      : (message = "Success");
+    res.status(new_user.status).send(message);
   } catch (error: any) {
-    utils.check_nullundefined(error?.response) === "false"
-      ? (status = 500)
-      : (status = error.response.status);
-    res.status(status).send(`${error}`);
+    res.status(500).send(`${error}`);
   }
 };
 
