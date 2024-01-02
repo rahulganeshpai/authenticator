@@ -51,9 +51,9 @@ class Server {
 }
 
 /**
- * Instance - Express Server
+ * Instance - Server
  * @description
- * Instance of Express Server Class
+ * Instance of Server Class
  */
 const server = new Server();
 export default server;

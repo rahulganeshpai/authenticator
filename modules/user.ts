@@ -1,5 +1,6 @@
-import service from "../service/service";
+import api from "../api/api";
 import generateEnv from "../config/config";
+import service from "../modules/service";
 
 const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
@@ -9,7 +10,7 @@ const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
  * Class for operations on User
  */
 class User {
-  async create_user(payload: any) {
+  create_user(payload: any) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };
@@ -20,7 +21,8 @@ class User {
       headers: headers,
       payload: payload,
     };
-    return await service().post(request);
+    return service.post(request);
+    // return api().post(request);
   }
   async fetch_credentials(payload: any) {
     const headers = {
@@ -31,9 +33,14 @@ class User {
       headers: headers,
       payload: payload,
     };
-    return await service().post(request);
+    return await api().post(request);
   }
 }
 
+/**
+ * Instance - User
+ * @description
+ * Instance of User Class
+ */
 const user = new User();
 export default user;

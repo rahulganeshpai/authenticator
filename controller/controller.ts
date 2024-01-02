@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import user from "../modules/user";
-import utils from "../utils/utils";
+import utils from "../modules/utils";
+import api from "../api/api";
 
 let message = null;
 
@@ -24,11 +25,12 @@ const welcome: RequestHandler = async (_, res) => {
  */
 const create_user: RequestHandler = async (req, res) => {
   try {
-    const new_user: any = await user.create_user(req.body);
-    utils.check_statuserror(new_user.status)
-      ? (message = new_user.message)
+    const new_user = user.create_user(req.body);
+    const result = await api().post([new_user]);
+    utils.check_statuserror(result.status)
+      ? (message = result.message)
       : (message = "Success");
-    res.status(new_user.status).send(message);
+    res.status(result.status).send(message);
   } catch (error: any) {
     res.status(500).send(`${error}`);
   }
