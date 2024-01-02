@@ -1,4 +1,3 @@
-import api from "../api/api";
 import generateEnv from "../config/config";
 import service from "../modules/service";
 
@@ -22,7 +21,6 @@ class User {
       payload: payload,
     };
     return service.post(request);
-    // return api().post(request);
   }
   async fetch_credentials(payload: any) {
     const headers = {
@@ -33,7 +31,7 @@ class User {
       headers: headers,
       payload: payload,
     };
-    return await api().post(request);
+    return service.post(request);
   }
 }
 

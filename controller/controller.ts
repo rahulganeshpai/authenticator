@@ -44,10 +44,11 @@ const create_user: RequestHandler = async (req, res) => {
 const fetch_credentials: RequestHandler = async (req, res) => {
   try {
     const credentials: any = await user.fetch_credentials(req.body);
-    utils.check_statuserror(credentials.status)
-      ? (message = `${credentials.message}`)
-      : (message = credentials.message.data);
-    res.status(credentials.status).send(message);
+    const result = await api().post([credentials]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
   } catch (error: any) {
     res.status(500).send(`${error}`);
   }
