@@ -16,7 +16,7 @@ class Server {
    * @description
    * Method for adding server configurations
    */
-  add_configurations() {
+  #add_configurations() {
     const app = express();
 
     app.use(json());
@@ -33,7 +33,7 @@ class Server {
    */
   initialise() {
     const PORT = generateEnv().PORT;
-    const app = this.add_configurations();
+    const app = this.#add_configurations();
     const initialise = app.listen(PORT, () => {
       console.log(`Listening on Port: ${PORT}`);
     });

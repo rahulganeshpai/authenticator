@@ -22,7 +22,7 @@ class User {
     };
     return service.post(request);
   }
-  async fetch_credentials(payload: any) {
+  fetch_usercredentials(payload: any) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };

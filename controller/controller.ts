@@ -43,7 +43,7 @@ const create_user: RequestHandler = async (req, res) => {
  */
 const fetch_credentials: RequestHandler = async (req, res) => {
   try {
-    const credentials: any = await user.fetch_credentials(req.body);
+    const credentials: any = user.fetch_usercredentials(req.body);
     const result = await api().post([credentials]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
