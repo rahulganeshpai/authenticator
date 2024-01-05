@@ -4,7 +4,6 @@ import helmet from "helmet";
 import compression from "compression";
 import router from "../routes/routes";
 import generateEnv from "../config/config";
-
 /**
  * Class - Server
  * @description

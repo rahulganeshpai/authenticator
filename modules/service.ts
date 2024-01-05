@@ -15,6 +15,11 @@ class Service {
     const result = axios.post(url, payload, { headers: headers });
     return result;
   }
+  async get(req: any) {
+    const { url, headers } = req;
+    const result = axios.get(url, { headers: headers });
+    return result;
+  }
 }
 
 /**
