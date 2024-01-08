@@ -3,6 +3,8 @@ import user from "../modules/user";
 import group from "../modules/group";
 import utils from "../modules/utils";
 import api from "../api/api";
+import secrets from "../modules/secrets";
+import approle from "../modules/approle";
 // import store from "../modules/store";
 
 let message = null;
@@ -99,7 +101,68 @@ const add_members: RequestHandler = async (req, res) => {
 
     // add member to group
     const add_memberstogroup = group.add_memberstogroup(req.body);
-    const result = await api().get([add_memberstogroup]);
+    const result = await api().post([add_memberstogroup]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Create Statics Secrets
+ * @description
+ * Controller having details for creating statics secrets details
+ */
+const create_staticsecrets: RequestHandler = async (req, res) => {
+  try {
+    const create_newsecret: any = secrets.create_kvsecrets(req.body);
+    const result = await api().post([create_newsecret]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Create Statics Secrets
+ * @description
+ * Controller having details for creating statics secrets details
+ */
+const fetch_staticsecrets: RequestHandler = async (req, res) => {
+  try {
+    const fetch_newsecret: any = secrets.read_kvsecrets(req.body);
+    const result = await api().get([fetch_newsecret]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Create AppRole
+ * @description
+ * Controller having details for creating approle details
+ */
+const create_approle: RequestHandler = async (req, res) => {
+  try {
+    const new_role: any = approle.create_newrole(req.body);
+    const new_roleresult = await api().post([new_role]);
+    console.log(new_roleresult);
+    // const role_id: any = approle.fetch_roleid(req.body);
+    // const role_idresult = await api().get([role_id]);
+    // result.message.data.data.role_id
+    // console.log(role_idresult);
+    const new_secret: any = approle.create_secret(req.body);
+    const result = await api().post([new_secret]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
@@ -121,6 +184,9 @@ const controller = () => {
     fetch_credentials: fetch_credentials,
     fetch_group: fetch_group,
     add_members: add_members,
+    create_staticsecrets: create_staticsecrets,
+    fetch_staticsecrets: fetch_staticsecrets,
+    create_approle: create_approle,
   };
 };
 

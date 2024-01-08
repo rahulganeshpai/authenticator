@@ -1,14 +1,13 @@
 import generateEnv from "../config/config";
 import service from "../modules/service";
 
+const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
+
 /**
  * Class - Group
  * @description
  * Class having implementation details for Group operations
  */
-
-const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
-
 class Group {
   fetch_group(payload: any) {
     const headers = {
@@ -21,7 +20,7 @@ class Group {
     };
     return service.get(request);
   }
-  add_memberstogroup(payload:any) {
+  add_memberstogroup(payload: any) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };
