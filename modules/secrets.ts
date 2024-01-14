@@ -14,7 +14,7 @@ class Secrets {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };
     const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/kv/data/db`,
+      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/kv/data${payload.path}`,
       headers: headers,
       payload: payload,
     };

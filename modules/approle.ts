@@ -1,7 +1,4 @@
-import generateEnv from "../config/config";
 import service from "../modules/service";
-
-const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
 /**
  * Class - AppRole
@@ -10,38 +7,13 @@ const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
  */
 class AppRole {
   create_newrole(payload: any) {
-    const headers = {
-      "X-Vault-Token": `${VAULT_TOKEN}`,
-    };
-    const role = payload.role;
-    delete payload.role;
-    const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/approle/role/${role}`,
-      headers: headers,
-      payload: payload,
-    };
-    return service.post(request);
+    return service.post(service.prepare_payload(payload, "create_newrole"));
   }
   fetch_roleid(payload: any) {
-    const headers = {
-      "X-Vault-Token": `${VAULT_TOKEN}`,
-    };
-    const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/approle/role/${payload.role}/role-id`,
-      headers: headers,
-    };
-    return service.get(request);
+    return service.post(service.prepare_payload(payload, "fetch_roleid"));
   }
   create_secret(payload: any) {
-    const headers = {
-      "X-Vault-Token": `${VAULT_TOKEN}`,
-    };
-    const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/approle/role/${payload.role}/secret-id`,
-      headers: headers,
-      payload: payload,
-    };
-    return service.post(request);
+    return service.post(service.prepare_payload(payload, "create_secret"));
   }
 }
 

@@ -1,6 +1,6 @@
 const PORT = process.env.PORT || 8001;
 const VAULT_ADDR = "http://localhost";
-const VAULT_PORT = 61548;
+const VAULT_PORT = 58514;
 const VAULT_TOKEN = "root";
 
 const generateEnv = () => {

@@ -5,7 +5,6 @@ import utils from "../modules/utils";
 import api from "../api/api";
 import secrets from "../modules/secrets";
 import approle from "../modules/approle";
-// import store from "../modules/store";
 
 let message = null;
 
@@ -16,9 +15,6 @@ let message = null;
  */
 const welcome: RequestHandler = async (_, res) => {
   try {
-    // await store.strore_contents();
-    // const data = await store.read_contents();
-    // console.log(data);
     res.status(200).send("Welcome to Authenticator");
   } catch (error: any) {
     res.status(500).send(error);

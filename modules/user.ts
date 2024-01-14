@@ -1,7 +1,4 @@
-import generateEnv from "../config/config";
 import service from "../modules/service";
-
-const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
 /**
  * Class - User
@@ -10,28 +7,12 @@ const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
  */
 class User {
   create_user(payload: any) {
-    const headers = {
-      "X-Vault-Token": `${VAULT_TOKEN}`,
-    };
-    const username = payload.username;
-    delete payload.username;
-    const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/userpass/users/${username}`,
-      headers: headers,
-      payload: payload,
-    };
-    return service.post(request);
+    return service.post(service.prepare_payload(payload, "create_user"));
   }
   fetch_usercredentials(payload: any) {
-    const headers = {
-      "X-Vault-Token": `${VAULT_TOKEN}`,
-    };
-    const request = {
-      url: `${VAULT_ADDR}:${VAULT_PORT}/v1/auth/userpass/login/${payload.username}`,
-      headers: headers,
-      payload: payload,
-    };
-    return service.post(request);
+    return service.post(
+      service.prepare_payload(payload, "fetch_usercredentials")
+    );
   }
 }
 
