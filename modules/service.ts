@@ -109,6 +109,37 @@ class Service {
         };
         break;
       }
+      case "create_key": {
+        const key = payload.name;
+        delete payload.name;
+        request = {
+          url: `${VAULT_ADDR}:${VAULT_PORT}/v1/transit/keys/${key}`,
+          headers: headers,
+          payload: payload,
+        };
+        break;
+      }
+      case "encrypt_data": {
+        payload.plaintext = Buffer.from(payload.plaintext,'utf8').toString('base64');
+        const key = payload.key;
+        delete payload.key;
+        request = {
+          url: `${VAULT_ADDR}:${VAULT_PORT}/v1/transit/encrypt/${key}`,
+          headers: headers,
+          payload: payload,
+        };
+        break;
+      }
+      case "decrypt_data": {
+        const key = payload.key;
+        delete payload.key;
+        request = {
+          url: `${VAULT_ADDR}:${VAULT_PORT}/v1/transit/decrypt/${key}`,
+          headers: headers,
+          payload: payload,
+        };
+        break;
+      }
       default: {
         break;
       }

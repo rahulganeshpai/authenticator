@@ -5,6 +5,7 @@ import utils from "../modules/utils";
 import api from "../api/api";
 import secrets from "../modules/secrets";
 import approle from "../modules/approle";
+import transit from "../modules/transit" 
 
 let message = null;
 
@@ -110,7 +111,7 @@ const add_members: RequestHandler = async (req, res) => {
 /**
  * Controller - Create Statics Secrets
  * @description
- * Controller having details for creating statics secrets details
+ * Controller having details for creating statics secrets
  */
 const create_staticsecrets: RequestHandler = async (req, res) => {
   try {
@@ -128,7 +129,7 @@ const create_staticsecrets: RequestHandler = async (req, res) => {
 /**
  * Controller - Create Statics Secrets
  * @description
- * Controller having details for creating statics secrets details
+ * Controller having details for creating statics secrets
  */
 const fetch_staticsecrets: RequestHandler = async (req, res) => {
   try {
@@ -146,7 +147,7 @@ const fetch_staticsecrets: RequestHandler = async (req, res) => {
 /**
  * Controller - Create AppRole
  * @description
- * Controller having details for creating approle details
+ * Controller having details for creating approle
  */
 const create_approle: RequestHandler = async (req, res) => {
   try {
@@ -169,6 +170,58 @@ const create_approle: RequestHandler = async (req, res) => {
 };
 
 /**
+ * Controller - Create new Key
+ * @description
+ * Controller having details for creating new Key
+ */
+const create_transitkey: RequestHandler = async (req, res) => {
+  try {
+    const create_key: any = transit.create_key(req.body);
+    const result = await api().post([create_key]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Encrypt data
+ * @description
+ * Controller having details for Encrypting data
+ */
+const encryption: RequestHandler = async (req, res) => {
+  try {
+    const encrypt_data: any = transit.encrypt_data(req.body);
+    const result = await api().post([encrypt_data]);
+    utils.check_statuserror(result.status)
+      ? (message = `${result.message}`)
+      : (message = result.message.data);
+    res.status(result.status).send(message);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
+ * Controller - Encrypt data
+ * @description
+ * Controller having details for Encrypting data
+ */
+const decryption: RequestHandler = async (req, res) => {
+  try {
+    const decrypt_data: any = transit.decrypt_data(req.body);
+    const result_decrypt_data = await api().post([decrypt_data]);
+    const result = Buffer.from(result_decrypt_data.message.data.data.plaintext,'base64').toString('utf8');
+    res.status(200).send(result);
+  } catch (error: any) {
+    res.status(500).send(`${error}`);
+  }
+};
+
+/**
  * Function - Controller
  * @description
  * Function containing all route controllers
@@ -183,6 +236,9 @@ const controller = () => {
     create_staticsecrets: create_staticsecrets,
     fetch_staticsecrets: fetch_staticsecrets,
     create_approle: create_approle,
+    create_transitkey: create_transitkey,
+    encryption: encryption,
+    decryption: decryption
   };
 };
 
