@@ -4,12 +4,13 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "node ./dist/bundle.js",
+    "start": "node ./bundle.js",
+    "commence": "node ./dist/bundle.js",
     "build-dev": "webpack",
     "build-prod": "webpack --config webpack.config.prod.js",
     "debug": "npm run build-dev && npx nodemon --inspect ./dist/bundle.js",
-    "dev": "npm run build-dev && npm run start",
-    "prod": "npm run build-prod && npm run start"
+    "dev": "npm run build-dev && npm run commence",
+    "prod": "npm run build-prod && npm run commence"
   },
   "keywords": [],
   "author": "",
