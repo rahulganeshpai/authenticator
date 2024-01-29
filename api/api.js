@@ -1,3 +1,5 @@
+"use strict";
+
 import utils from "../modules/utils";
 
 let status = null;
@@ -7,14 +9,14 @@ let status = null;
  * @description
  * API for HTTP service POST
  */
-const post_service = async (req: any) => {
+const post_service = async (req) => {
   try {
     const [result] = await Promise.all(req);
     return utils.generate_statusobject(
       utils.check_statusredirection(result.status),
       result
     );
-  } catch (error: any) {
+  } catch (error) {
     utils.check_nullundefined(error?.response) === "false"
       ? (status = 500)
       : (status = error.response.status);
@@ -27,14 +29,14 @@ const post_service = async (req: any) => {
  * @description
  * API for HTTP service GET
  */
-const get_service = async (req: any) => {
+const get_service = async (req) => {
   try {
     const [result] = await Promise.all(req);
     return utils.generate_statusobject(
       utils.check_statusredirection(result.status),
       result
     );
-  } catch (error: any) {
+  } catch (error) {
     utils.check_nullundefined(error?.response) === "false"
       ? (status = 500)
       : (status = error.response.status);

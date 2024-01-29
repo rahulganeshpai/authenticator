@@ -1,5 +1,7 @@
+"use strict";
+
 import generateEnv from "../config/config";
-import service from "../modules/service";
+import service from "./service";
 
 const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
@@ -9,7 +11,7 @@ const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
  * Class having implementation details for Secrets operations
  */
 class Secrets {
-  create_kvsecrets(payload: any) {
+  create_kvsecrets(payload) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };
@@ -20,7 +22,7 @@ class Secrets {
     };
     return service.post(request);
   }
-  read_kvsecrets(payload: any) {
+  read_kvsecrets(payload) {
     let url = null;
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,

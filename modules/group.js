@@ -1,5 +1,7 @@
+"use strict";
+
 import generateEnv from "../config/config";
-import service from "../modules/service";
+import service from "./service";
 
 const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
@@ -9,7 +11,7 @@ const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
  * Class having implementation details for Group operations
  */
 class Group {
-  fetch_group(payload: any) {
+  fetch_group(payload) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };
@@ -20,7 +22,7 @@ class Group {
     };
     return service.get(request);
   }
-  add_memberstogroup(payload: any) {
+  add_memberstogroup(payload) {
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
     };

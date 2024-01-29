@@ -1,11 +1,12 @@
-import { RequestHandler } from "express";
+"use strict";
+
 import user from "../modules/user";
 import group from "../modules/group";
 import utils from "../modules/utils";
 import api from "../api/api";
 import secrets from "../modules/secrets";
 import approle from "../modules/approle";
-import transit from "../modules/transit" 
+import transit from "../modules/transit";
 
 let message = null;
 
@@ -14,10 +15,10 @@ let message = null;
  * @description
  * Controller for Welcome Page
  */
-const welcome: RequestHandler = async (_, res) => {
+const welcome = async (_, res) => {
   try {
     res.status(200).send("Welcome to Authenticator");
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(error);
   }
 };
@@ -27,7 +28,7 @@ const welcome: RequestHandler = async (_, res) => {
  * @description
  * Controller for creating new user
  */
-const create_user: RequestHandler = async (req, res) => {
+const create_user = async (req, res) => {
   try {
     const new_user = user.create_user(req.body);
     const result = await api().post([new_user]);
@@ -35,7 +36,7 @@ const create_user: RequestHandler = async (req, res) => {
       ? (message = result.message)
       : (message = "Success");
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -45,15 +46,15 @@ const create_user: RequestHandler = async (req, res) => {
  * @description
  * Controller for fetching user credentials
  */
-const fetch_credentials: RequestHandler = async (req, res) => {
+const fetch_credentials = async (req, res) => {
   try {
-    const credentials: any = user.fetch_usercredentials(req.body);
+    const credentials = user.fetch_usercredentials(req.body);
     const result = await api().post([credentials]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -63,16 +64,16 @@ const fetch_credentials: RequestHandler = async (req, res) => {
  * @description
  * Controller for fetching group details
  */
-const fetch_group: RequestHandler = async (req, res) => {
+const fetch_group = async (req, res) => {
   try {
     // result.message.data.data.id
-    const get_group: any = group.fetch_group(req.body);
+    const get_group = group.fetch_group(req.body);
     const result = await api().get([get_group]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -82,7 +83,7 @@ const fetch_group: RequestHandler = async (req, res) => {
  * @description
  * Controller for adding Members to group
  */
-const add_members: RequestHandler = async (req, res) => {
+const add_members = async (req, res) => {
   try {
     // fetch group info
     const fetch_group_api = group.fetch_group(req.body);
@@ -90,7 +91,7 @@ const add_members: RequestHandler = async (req, res) => {
     req.body.id = fetch_group_result.message.data.data.id;
 
     // fetch member info
-    const fetch_memeber: any = user.fetch_usercredentials(req.body);
+    const fetch_memeber = user.fetch_usercredentials(req.body);
     const fetch_memeber_result = await api().post([fetch_memeber]);
     req.body.member_entity_ids = [
       fetch_memeber_result.message.data.auth.entity_id,
@@ -103,7 +104,7 @@ const add_members: RequestHandler = async (req, res) => {
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -113,15 +114,15 @@ const add_members: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for creating statics secrets
  */
-const create_staticsecrets: RequestHandler = async (req, res) => {
+const create_staticsecrets = async (req, res) => {
   try {
-    const create_newsecret: any = secrets.create_kvsecrets(req.body);
+    const create_newsecret = secrets.create_kvsecrets(req.body);
     const result = await api().post([create_newsecret]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -131,15 +132,15 @@ const create_staticsecrets: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for creating statics secrets
  */
-const fetch_staticsecrets: RequestHandler = async (req, res) => {
+const fetch_staticsecrets = async (req, res) => {
   try {
-    const fetch_newsecret: any = secrets.read_kvsecrets(req.body);
+    const fetch_newsecret = secrets.read_kvsecrets(req.body);
     const result = await api().get([fetch_newsecret]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -149,22 +150,22 @@ const fetch_staticsecrets: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for creating approle
  */
-const create_approle: RequestHandler = async (req, res) => {
+const create_approle = async (req, res) => {
   try {
-    const new_role: any = approle.create_newrole(req.body);
+    const new_role = approle.create_newrole(req.body);
     const new_roleresult = await api().post([new_role]);
     console.log(new_roleresult);
     // const role_id: any = approle.fetch_roleid(req.body);
     // const role_idresult = await api().get([role_id]);
     // result.message.data.data.role_id
     // console.log(role_idresult);
-    const new_secret: any = approle.create_secret(req.body);
+    const new_secret = approle.create_secret(req.body);
     const result = await api().post([new_secret]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -174,15 +175,15 @@ const create_approle: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for creating new Key
  */
-const create_transitkey: RequestHandler = async (req, res) => {
+const create_transitkey = async (req, res) => {
   try {
-    const create_key: any = transit.create_key(req.body);
+    const create_key = transit.create_key(req.body);
     const result = await api().post([create_key]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -192,15 +193,15 @@ const create_transitkey: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for Encrypting data
  */
-const encryption: RequestHandler = async (req, res) => {
+const encryption = async (req, res) => {
   try {
-    const encrypt_data: any = transit.encrypt_data(req.body);
+    const encrypt_data = transit.encrypt_data(req.body);
     const result = await api().post([encrypt_data]);
     utils.check_statuserror(result.status)
       ? (message = `${result.message}`)
       : (message = result.message.data);
     res.status(result.status).send(message);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -210,13 +211,16 @@ const encryption: RequestHandler = async (req, res) => {
  * @description
  * Controller having details for Encrypting data
  */
-const decryption: RequestHandler = async (req, res) => {
+const decryption = async (req, res) => {
   try {
-    const decrypt_data: any = transit.decrypt_data(req.body);
+    const decrypt_data = transit.decrypt_data(req.body);
     const result_decrypt_data = await api().post([decrypt_data]);
-    const result = Buffer.from(result_decrypt_data.message.data.data.plaintext,'base64').toString('utf8');
+    const result = Buffer.from(
+      result_decrypt_data.message.data.data.plaintext,
+      "base64"
+    ).toString("utf8");
     res.status(200).send(result);
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).send(`${error}`);
   }
 };
@@ -238,7 +242,7 @@ const controller = () => {
     create_approle: create_approle,
     create_transitkey: create_transitkey,
     encryption: encryption,
-    decryption: decryption
+    decryption: decryption,
   };
 };
 

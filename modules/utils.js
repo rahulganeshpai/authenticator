@@ -1,29 +1,31 @@
-import axios from "axios";
-import generateEnv from "../config/config";
+"use strict";
 
-axios.defaults.headers.common["Accept"] = "application/json";
-axios.defaults.headers.common["Content-Type"] =
-  "application/json;charset=utf-8";
+import generateEnv from "../config/config";
 
 const { VAULT_ADDR, VAULT_PORT, VAULT_TOKEN } = generateEnv();
 
 /**
- * Class - Service
+ * Class - Utils
  * @description
- * Class having implementation details for service operations
+ * Class having implementation details for utility operations
  */
-class Service {
-  async post(req: any) {
-    const { url, headers, payload } = req;
-    const result = axios.post(url, payload, { headers: headers });
-    return result;
+class Utils {
+  check_nullundefined(value) {
+    return value ?? "false";
   }
-  async get(req: any) {
-    const { url, headers } = req;
-    const result = axios.get(url, { headers: headers });
-    return result;
+  generate_statusobject(status, message) {
+    return {
+      status: status,
+      message: message,
+    };
   }
-  prepare_payload(payload: any, type: string) {
+  check_statuserror(status) {
+    return /^[4-5]/.test(status.toString());
+  }
+  check_statusredirection(status) {
+    return status === 204 ? (status = 200) : (status = status);
+  }
+  prepare_payload(payload, type) {
     let request = {};
     const headers = {
       "X-Vault-Token": `${VAULT_TOKEN}`,
@@ -120,7 +122,9 @@ class Service {
         break;
       }
       case "encrypt_data": {
-        payload.plaintext = Buffer.from(payload.plaintext,'utf8').toString('base64');
+        payload.plaintext = Buffer.from(payload.plaintext, "utf8").toString(
+          "base64"
+        );
         const key = payload.key;
         delete payload.key;
         request = {
@@ -149,9 +153,9 @@ class Service {
 }
 
 /**
- * Instance - Service
+ * Instance - Utils
  * @description
- * Instance of Service Class
+ * Instance of Utils Class
  */
-const service = new Service();
-export default service;
+const utils = new Utils();
+export default utils;

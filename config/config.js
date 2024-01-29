@@ -1,3 +1,5 @@
+"use strict";
+
 const PORT = process.env.PORT || 8001;
 const VAULT_ADDR = "http://localhost";
 const VAULT_PORT = 53702;

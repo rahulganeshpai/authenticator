@@ -2,11 +2,18 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-const path_dist = path.resolve(__dirname, "dist");
+
+function generate_path(name) {
+  return path.resolve(__dirname, name);
+}
+
+const path_dist = generate_path("dist");
+const path_webpack = generate_path("webpack.config.js");
+console.log("path_webpack", path_webpack);
 
 module.exports = {
   mode: "production",
-  entry: "./index.ts",
+  entry: "./index.js",
   target: "node",
   externals: [nodeExternals()],
   output: {
@@ -14,18 +21,27 @@ module.exports = {
     path: path_dist,
   },
   devtool: false,
-
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        loader: "ts-loader",
-        exclude: /node_modules/,
+        test: /\.(?:js)$/,
+        exclude: [/node_modules/, path_webpack],
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [["@babel/preset-env", { targets: "defaults" }]],
+            plugins: [
+              "@babel/plugin-transform-jscript",
+              "@babel/plugin-transform-runtime",
+              "@babel/plugin-transform-strict-mode",
+            ],
+          },
+        },
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".js"],
   },
   plugins: [new CleanWebpackPlugin(), new CaseSensitivePathsPlugin()],
 };

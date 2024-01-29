@@ -1,3 +1,5 @@
+"use strict";
+
 import express, { json } from "express";
 import cors from "cors";
 import helmet from "helmet";

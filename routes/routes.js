@@ -1,3 +1,5 @@
+"use strict";
+
 import { Router } from "express";
 import controller from "../controller/controller";
 
@@ -13,7 +15,7 @@ const {
   create_approle,
   create_transitkey,
   encryption,
-  decryption
+  decryption,
 } = controller();
 
 router.get("/", welcome_handler);
