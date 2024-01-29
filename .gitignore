@@ -38,6 +38,7 @@
 !tsconfig.json
 !package.json
 !package-lock.json
+!nodemon.json
 
 # misc
 .DS_Store
